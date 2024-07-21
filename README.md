@@ -10,7 +10,8 @@ Elles sont entrés à la main, en copiant des caractéristiques de Strava ou Dé
 # Évolutions à prévoir
 
 ## Technique
-* Voir pour un héritage de la classe "Workout". En effet, 
+* Revoir la classe "Workout". En effet, je n'ai pas trouvé comment bien initier "WorkoutSwimming" ou "WorkoutCycle" en fonction du sport autrement qu'en entrant en dur des conditions. Dès qu'une donnée change côté BDD, il faudra faire gaffe à modifier le code.
+* Faire l'hydratation automatique.
 
 ## Autres
 * Connecter l'API Décathlon Coach pour recevoir automatiquement les séances
