@@ -80,7 +80,7 @@
                 <td></td>
                 <td></td>
                 <td><?= $sumDatas->getSumTime(); ?></td>
-                <td><?= $sumDatas->getSumDistance(true); ?></td>
+                <td><?= $sumDatas->getSumDistance(" km"); ?></td>
                 <td><?= $sumDatas->getSumElevation(); ?></td>
             </tr>
 <?php foreach($workouts as $workout) { ?>

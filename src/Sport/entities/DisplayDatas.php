@@ -34,9 +34,9 @@ class DisplayDatas
         }
     }
 
-    public function getSumDistance($km = false): string
+    public function getSumDistance($unit = ""): string
     {
-        return $this->showDistanceFormated($this->sumDistance, $km);
+        return $this->showDistanceFormated($this->sumDistance, $unit);
     }
 
     public function getMoyDistance(): string
@@ -49,9 +49,9 @@ class DisplayDatas
         return $this->showDistanceFormated($this->maxDistance);
     }
 
-    public function showDistanceFormated($distance, $km = false): string
+    public function showDistanceFormated($distance, $unit = ""): string
     {
-        return $distance > 0 ? number_format($distance, 0, ".", " ").($km ? " km" : "") : "";
+        return $distance > 0 ? number_format($distance, 0, ".", " ").$unit : "";
     }
 
     public function getSumTime(): string
@@ -81,7 +81,7 @@ class DisplayDatas
 
     public function getSumElevation(): string
     {
-        return $this->showDistanceFormated($this->sumElevation, true);
+        return $this->showDistanceFormated($this->sumElevation, " m");
     }
 
 }

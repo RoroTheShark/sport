@@ -222,7 +222,7 @@ class WorkoutRepository
             $requeteAddWhere .= " AND se.id IN (SELECT id_seance FROM seances_partenaires WHERE id_partenaire = :fPartner)";
             $requeteParams["fPartner"] = $fPartner;
         }
-        if($requeteAddWhere == "") {
+        if($requeteAddWhere == "" || ($fDateStart == "" && $fDateEnd == "")) {
             $classicDateStart = date('Y-m-d', strtotime('-1 year'));
             $requeteAddWhere .= " AND se.date_seance > :classicDateStart";
             $requeteParams["classicDateStart"] = $classicDateStart;

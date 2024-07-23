@@ -316,6 +316,11 @@ function listWorkouts()
     $workoutRepository = new WorkoutRepository();
     $workouts = $workoutRepository->findSeveralBy($fDateStart, $fDateEnd, $fSport, $fEnvironment, $fDistanceStart, $fDistanceEnd, $fTimeStart, $fTimeEnd, $fPartner);
 
+    $sumTime = array_sum(array_map(fn($s): int => $s->getTime(), $workouts));
+    $sumDistance = round(array_sum(array_map(fn($s): int => $s->getDistance(), $workouts))/1000);
+    $sumElevation = array_sum(array_map(fn($s): int => $s->getElevation(), $workouts));
+    $sumDatas = new DisplayDatas($sumDistance, 0, $sumTime, 0, 0, $sumElevation);
+
     require('templates/sport/list_workouts.php');
 }
 
@@ -531,11 +536,11 @@ function listStats()
                     $provEnv['numWorkoutsPrevious'] += $numWorkoutsPrevious;
                     $arrayEnv[$environment->getId()] = $provEnv;
                 }
-                $arrayResults['months'][$month->getId()]['environments'][$environment->getId()]['actual'] = new DisplayDatas($sumDistanceActual, $maxDistanceActual, $sumTimeActual, $maxTimeActual, $numWorkoutsActual);
+                $arrayResults['months'][$month->getId()]['environments'][$environment->getId()]['actual'] = new DisplayDatas($sumDistanceActual, $maxDistanceActual, $sumTimeActual, $maxTimeActual, $numWorkoutsActual, 0);
                 $arrayResults['months'][$month->getId()]['environments'][$environment->getId()]['previous'] = new DisplayDatas($sumDistancePrevious, $maxDistancePrevious, $sumTimePrevious, $maxTimePrevious, $numWorkoutsPrevious);
             }
-            $arrayResults['months'][$month->getId()]['sports'][$sport->getId()]['actual'] = new DisplayDatas($arraySport['sumDistanceActual'], $arraySport['maxDistanceActual'], $arraySport['sumTimeActual'], $arraySport['maxTimeActual'], $arraySport['numWorkoutsActual']);
-            $arrayResults['months'][$month->getId()]['sports'][$sport->getId()]['previous'] = new DisplayDatas($arraySport['sumDistancePrevious'], $arraySport['maxDistancePrevious'], $arraySport['sumTimePrevious'], $arraySport['maxTimePrevious'], $arraySport['numWorkoutsPrevious']);
+            $arrayResults['months'][$month->getId()]['sports'][$sport->getId()]['actual'] = new DisplayDatas($arraySport['sumDistanceActual'], $arraySport['maxDistanceActual'], $arraySport['sumTimeActual'], $arraySport['maxTimeActual'], $arraySport['numWorkoutsActual'], 0);
+            $arrayResults['months'][$month->getId()]['sports'][$sport->getId()]['previous'] = new DisplayDatas($arraySport['sumDistancePrevious'], $arraySport['maxDistancePrevious'], $arraySport['sumTimePrevious'], $arraySport['maxTimePrevious'], $arraySport['numWorkoutsPrevious'], 0);
 
             // Somme pour les tableaux de months
             $arrayMonth['sumDistanceActual'] += $arraySport['sumDistanceActual'];
@@ -550,16 +555,16 @@ function listStats()
             $arrayMonth['numWorkoutsPrevious'] += $arraySport['numWorkoutsPrevious'];
         }
 
-        $arrayResults['months'][$month->getId()]['total']['actual'] = new DisplayDatas($arrayMonth['sumDistanceActual'], $arrayMonth['maxDistanceActual'], $arrayMonth['sumTimeActual'], $arrayMonth['maxTimeActual'], $arrayMonth['numWorkoutsActual']);
-        $arrayResults['months'][$month->getId()]['total']['previous'] = new DisplayDatas($arrayMonth['sumDistancePrevious'], $arrayMonth['maxDistancePrevious'], $arrayMonth['sumTimePrevious'], $arrayMonth['maxTimePrevious'], $arrayMonth['numWorkoutsPrevious']);
+        $arrayResults['months'][$month->getId()]['total']['actual'] = new DisplayDatas($arrayMonth['sumDistanceActual'], $arrayMonth['maxDistanceActual'], $arrayMonth['sumTimeActual'], $arrayMonth['maxTimeActual'], $arrayMonth['numWorkoutsActual'], 0);
+        $arrayResults['months'][$month->getId()]['total']['previous'] = new DisplayDatas($arrayMonth['sumDistancePrevious'], $arrayMonth['maxDistancePrevious'], $arrayMonth['sumTimePrevious'], $arrayMonth['maxTimePrevious'], $arrayMonth['numWorkoutsPrevious'], 0);
     }
 
     // On repasse sur chaque environnement pour faire la synthèse
     foreach($sportsPeriod as $sport) {
         $arrayTotalSport = $tabType;
         foreach($sport->getEnvironments() as $environment) {
-            $arrayResults['environments'][$environment->getId()]['actual'] = new DisplayDatas($arrayEnv[$environment->getId()]['sumDistanceActual'], $arrayEnv[$environment->getId()]['maxDistanceActual'], $arrayEnv[$environment->getId()]['sumTimeActual'], $arrayEnv[$environment->getId()]['maxTimeActual'], $arrayEnv[$environment->getId()]['numWorkoutsActual']);
-            $arrayResults['environments'][$environment->getId()]['previous'] = new DisplayDatas($arrayEnv[$environment->getId()]['sumDistancePrevious'], $arrayEnv[$environment->getId()]['maxDistancePrevious'], $arrayEnv[$environment->getId()]['sumTimePrevious'], $arrayEnv[$environment->getId()]['maxTimePrevious'], $arrayEnv[$environment->getId()]['numWorkoutsPrevious']);
+            $arrayResults['environments'][$environment->getId()]['actual'] = new DisplayDatas($arrayEnv[$environment->getId()]['sumDistanceActual'], $arrayEnv[$environment->getId()]['maxDistanceActual'], $arrayEnv[$environment->getId()]['sumTimeActual'], $arrayEnv[$environment->getId()]['maxTimeActual'], $arrayEnv[$environment->getId()]['numWorkoutsActual'], 0);
+            $arrayResults['environments'][$environment->getId()]['previous'] = new DisplayDatas($arrayEnv[$environment->getId()]['sumDistancePrevious'], $arrayEnv[$environment->getId()]['maxDistancePrevious'], $arrayEnv[$environment->getId()]['sumTimePrevious'], $arrayEnv[$environment->getId()]['maxTimePrevious'], $arrayEnv[$environment->getId()]['numWorkoutsPrevious'], 0);
 
             // Somme pour les tableaux de sport
             $arrayTotalSport['sumDistanceActual'] += $arrayEnv[$environment->getId()]['sumDistanceActual'];
@@ -575,8 +580,8 @@ function listStats()
             $arrayTotalSport['numWorkoutsPrevious'] += $arrayEnv[$environment->getId()]['numWorkoutsPrevious'];
         }
         $arrayResults['sports'][$sport->getId()] = [
-            'actual' => new DisplayDatas($arrayTotalSport['sumDistanceActual'], $arrayTotalSport['maxDistanceActual'], $arrayTotalSport['sumTimeActual'], $arrayTotalSport['maxTimeActual'], $arrayTotalSport['numWorkoutsActual']),
-            'previous' => new DisplayDatas($arrayTotalSport['sumDistancePrevious'], $arrayTotalSport['maxDistancePrevious'], $arrayTotalSport['sumTimePrevious'], $arrayTotalSport['maxTimePrevious'], $arrayTotalSport['numWorkoutsPrevious'])
+            'actual' => new DisplayDatas($arrayTotalSport['sumDistanceActual'], $arrayTotalSport['maxDistanceActual'], $arrayTotalSport['sumTimeActual'], $arrayTotalSport['maxTimeActual'], $arrayTotalSport['numWorkoutsActual'], 0),
+            'previous' => new DisplayDatas($arrayTotalSport['sumDistancePrevious'], $arrayTotalSport['maxDistancePrevious'], $arrayTotalSport['sumTimePrevious'], $arrayTotalSport['maxTimePrevious'], $arrayTotalSport['numWorkoutsPrevious'], 0)
         ];
 
         // Somme pour le tableau total
@@ -592,8 +597,8 @@ function listStats()
         $arrayTotal['maxTimePrevious'] = $arrayTotal['maxTimePrevious'] < $arrayTotalSport['maxTimePrevious'] ? $arrayTotalSport['maxTimePrevious'] : $arrayTotal['maxTimePrevious'];
         $arrayTotal['numWorkoutsPrevious'] += $arrayTotalSport['numWorkoutsPrevious'];
     }
-    $arrayResults['total']['actual'] = new DisplayDatas($arrayTotal['sumDistanceActual'], $arrayTotal['maxDistanceActual'], $arrayTotal['sumTimeActual'], $arrayTotal['maxTimeActual'], $arrayTotal['numWorkoutsActual']);
-    $arrayResults['total']['previous'] = new DisplayDatas($arrayTotal['sumDistancePrevious'], $arrayTotal['maxDistancePrevious'], $arrayTotal['sumTimePrevious'], $arrayTotal['maxTimePrevious'], $arrayTotal['numWorkoutsPrevious']);
+    $arrayResults['total']['actual'] = new DisplayDatas($arrayTotal['sumDistanceActual'], $arrayTotal['maxDistanceActual'], $arrayTotal['sumTimeActual'], $arrayTotal['maxTimeActual'], $arrayTotal['numWorkoutsActual'], 0);
+    $arrayResults['total']['previous'] = new DisplayDatas($arrayTotal['sumDistancePrevious'], $arrayTotal['maxDistancePrevious'], $arrayTotal['sumTimePrevious'], $arrayTotal['maxTimePrevious'], $arrayTotal['numWorkoutsPrevious'], 0);
 
     $partnerRepository = new PartnerRepository();
     $statsPartners = $partnerRepository->findStatsByDates($stringDateStartActual, $stringDateEndActual);
