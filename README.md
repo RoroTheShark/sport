@@ -9,7 +9,7 @@ Elles sont entrés à la main, en copiant des caractéristiques de Strava ou Dé
 
 ## La base de données
 Une image vaut mieux que mille mots :
-[![BDD]](https://raw.githubusercontent.com/RoroTheShark/sport/main/Sch__ma.svg)
+![BDD](https://raw.githubusercontent.com/RoroTheShark/sport/main/Sch__ma.svg)
 
 ## Versions
  * PHP : 8.2.0
