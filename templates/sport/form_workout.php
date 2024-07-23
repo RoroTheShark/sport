@@ -239,6 +239,8 @@
 					cptErr++;
 					tabErr.push("distance");
 				}
+			}
+			if(sport == "1") {
 				var inputsCountry = document.getElementById("divPays").getElementsByTagName("input");
 				var cptCountries = 0;
 				for(var i = 0; i < inputsCountry.length; i++) {

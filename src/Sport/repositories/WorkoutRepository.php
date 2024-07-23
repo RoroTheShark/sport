@@ -69,8 +69,7 @@ class WorkoutRepository
         $requeteWorkout .= " LEFT JOIN (SELECT sepa.id_seance, GROUP_CONCAT(CONCAT(pa.id,'-',pa.nom) SEPARATOR ', ') AS partenaires FROM s_partenaires pa, s_seances_partenaires sepa WHERE pa.id = sepa.id_partenaire GROUP BY sepa.id_seance) sesepa ON (se.id = sesepa.id_seance)";
         $requeteWorkout .= " LEFT JOIN (SELECT sero.id_seance, GROUP_CONCAT(CONCAT(ro.id,'-',ro.nom,'-',sero.nombre) SEPARATOR ', ') AS routes FROM s_routes ro, s_seances_routes sero WHERE ro.id = sero.id_route GROUP BY sero.id_seance) sesero ON (se.id = sesero.id_seance)";
         $requeteWorkout .= " WHERE env.id_sport = sp.id AND se.id_environnement = env.id AND se.id_ce = ce.id AND se.id_intensite = i.id AND se.id = :idWorkout";
-        $requeteWorkout .= " GROUP BY se.id, se.date_seance, sp.id, sp.nom, env.nom, se.temps, se.distance, se.denivele, ce.nom, i.valeur, se.id_strava, se.id_decathlon, se.commentaire, se.entrainement";
-        $requeteWorkout .= " ORDER BY date_seance DESC;";
+        $requeteWorkout .= " GROUP BY se.id, se.date_seance, sp.id, sp.nom, env.nom, se.temps, se.distance, se.denivele, ce.nom, i.valeur, se.id_strava, se.id_decathlon, se.commentaire, se.entrainement;";
 
         $resultWorkout = $this->dbMysql->select_one($requeteWorkout, ['idWorkout' => $idWorkout]);
 
@@ -236,7 +235,7 @@ class WorkoutRepository
         $requeteWorkouts .= " WHERE env.id_sport = sp.id AND se.id_environnement = env.id AND se.id_ce = ce.id AND se.id_intensite = i.id";
         $requeteWorkouts .= $requeteAddWhere;
         $requeteWorkouts .= " GROUP BY se.id, se.date_seance, sp.id, sp.nom, env.nom, se.temps, se.distance, se.denivele, ce.nom, i.valeur, se.id_strava, se.id_decathlon, se.commentaire, se.entrainement";
-        $requeteWorkouts .= " ORDER BY date_seance DESC;";
+        $requeteWorkouts .= " ORDER BY se.date_seance DESC, se.id_moment DESC;";
         //echo $requeteWorkouts;
         $resultsWorkouts = $this->dbMysql->select($requeteWorkouts, $requeteParams);
 
@@ -479,9 +478,9 @@ class WorkoutRepository
             $resultVerif = $this->dbMysql->select_one($requeteVerif, ['idWorkout' => $idWorkout, 'idPartner' => $partner['id']]);
 
             $requeteWorkoutPartner = "";
-            if(in_array($partner['id'], $_POST['partners']) && !$resultVerif) {
+            if(isset($_POST['partners']) && in_array($partner['id'], $_POST['partners']) && !$resultVerif) {
                 $requeteWorkoutPartner = "INSERT INTO s_seances_partenaires (id_seance, id_partenaire) VALUES (:idWorkout, :idPartner);";
-            } else if(!in_array($partner['id'], $_POST['partners']) && $resultVerif) {
+            } else if((!isset($_POST['partners']) || !in_array($partner['id'], $_POST['partners'])) && $resultVerif) {
                 $requeteWorkoutPartner = "DELETE FROM s_seances_partenaires WHERE id_seance = :idWorkout AND id_partenaire = :idPartner;";
             }
             if($requeteWorkoutPartner != "")
@@ -510,8 +509,7 @@ class WorkoutRepository
             $requeteVerif = "SELECT id FROM s_seances_routes WHERE id_seance = :idWorkout AND id_route = :idRoad;";
             $resultVerif = $this->dbMysql->select_one($requeteVerif, ['idWorkout' => $idWorkout, 'idRoad' => $road['id']]);
 
-            $requeteWorkoutRoad = "";
-            if(isset($_POST['nb_route_'.$road['id']]) && $_POST['nb_route_'.$road['id']] > 0 && $resultVerif) {
+            if(isset($_POST['nb_route_'.$road['id']]) && $_POST['nb_route_'.$road['id']] > 0 && !$resultVerif) {
                 $requeteWorkoutRoad = "INSERT INTO s_seances_routes (id_seance, id_route, nombre) VALUES (:idWorkout, :idRoad, :number);";
                 $resultWorkoutRoad = $this->dbMysql->InsertDeleteUpdate($requeteWorkoutRoad, ['idWorkout' => $idWorkout, 'idRoad' => $road['id'], 'number' => $_POST['nb_route_'.$road['id']]]);
             } else if($resultVerif) {
@@ -519,7 +517,7 @@ class WorkoutRepository
                     $requeteWorkoutRoad = "DELETE FROM s_seances_routes WHERE id_seance = :idWorkout AND id_route = :idRoad;";
                     $resultWorkoutRoad = $this->dbMysql->InsertDeleteUpdate($requeteWorkoutRoad, ['idWorkout' => $idWorkout, 'idRoad' => $road['id']]);
                 } else {
-                    $requeteWorkoutRoad = "UPDATE s_seances_routes SET nombre = ".$_POST['nb_route_'.$road['id']]." WHERE id_seance = ".$idWorkout." AND id_route = ".$road['id'].";";
+                    $requeteWorkoutRoad = "UPDATE s_seances_routes SET nombre = :number WHERE id_seance = :idWorkout AND id_route = :idRoad;";
                     $resultWorkoutRoad = $this->dbMysql->InsertDeleteUpdate($requeteWorkoutRoad, ['idWorkout' => $idWorkout, 'idRoad' => $road['id'], 'number' => $_POST['nb_route_'.$road['id']]]);
                 }
             }
