@@ -17,14 +17,16 @@ class DisplayDatas
     private int $moyTime = 0;
     private int $maxTime;
     private int $numWorkouts;
+    private int $sumElevation;
 
-    public function __construct(int $sumDistance, int $maxDistance, int $sumTime, int $maxTime, int $numWorkouts)
+    public function __construct(int $sumDistance, int $maxDistance, int $sumTime, int $maxTime, int $numWorkouts, int $sumElevation = 0)
     {
         $this->sumDistance = $sumDistance;
         $this->maxDistance = $maxDistance;
         $this->sumTime = $sumTime;
         $this->maxTime = $maxTime;
         $this->numWorkouts = $numWorkouts;
+        $this->sumElevation = $sumElevation;
 
         if($this->numWorkouts > 0) {
             $this->moyDistance = round($this->sumDistance/$this->numWorkouts);
@@ -32,9 +34,9 @@ class DisplayDatas
         }
     }
 
-    public function getSumDistance(): string
+    public function getSumDistance($km = false): string
     {
-        return $this->showDistanceFormated($this->sumDistance);
+        return $this->showDistanceFormated($this->sumDistance, $km);
     }
 
     public function getMoyDistance(): string
@@ -47,9 +49,9 @@ class DisplayDatas
         return $this->showDistanceFormated($this->maxDistance);
     }
 
-    public function showDistanceFormated($distance): string
+    public function showDistanceFormated($distance, $km = false): string
     {
-        return $distance > 0 ? number_format($distance, 0, ".", " ") : "";
+        return $distance > 0 ? number_format($distance, 0, ".", " ").($km ? " km" : "") : "";
     }
 
     public function getSumTime(): string
@@ -76,4 +78,10 @@ class DisplayDatas
     {
         return $this->numWorkouts;
     }
+
+    public function getSumElevation(): string
+    {
+        return $this->showDistanceFormated($this->sumElevation, true);
+    }
+
 }

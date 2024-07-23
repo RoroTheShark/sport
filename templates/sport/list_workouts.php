@@ -79,9 +79,9 @@
                 <td><?= count($workouts); ?></td>
                 <td></td>
                 <td></td>
-                <?php /*<td><?= numberToHour(array_sum(array_map(function($s) {return $s->getTime();}, $workouts))); ?></td>
-                <td><?= miseFormeKM(array_sum(array_map(function($s) {return function_exists($s->getDistance()) ? $s->getDistance() : 0;}, $workouts))); ?></td>
-                <td><?= miseFormeKM(array_sum(array_map(function($s) {return get_class($s) == "WorkoutCycleRunWalk" ? $s->getElevation() : 0;}, $workouts))); ?></td> */?>
+                <td><?= $sumDatas->getSumTime(); ?></td>
+                <td><?= $sumDatas->getSumDistance(true); ?></td>
+                <td><?= $sumDatas->getSumElevation(); ?></td>
             </tr>
 <?php foreach($workouts as $workout) { ?>
             <tr>
