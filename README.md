@@ -8,8 +8,8 @@ Elle date de plusieurs années, et je n'ai pas eu le temps de tout mettre à jou
 Elles sont entrés à la main, en copiant des caractéristiques de Strava ou Décathlon coach.
 
 ## La base de données
-Une image vaut mieux que mille mots :)
-[![BDD][bdd]](https://github.com/RoroTheShark/sport/blob/main/Sch__ma.svg?raw=true)
+Une image vaut mieux que mille mots :
+[![BDD]](https://github.com/RoroTheShark/sport/blob/main/Sch__ma.svg?raw=true)
 
 ## Versions
  * PHP : 8.2.0
