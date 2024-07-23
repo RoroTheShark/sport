@@ -205,7 +205,7 @@ class Workout
 
     public function asPartner(Partner $partner): bool
     {
-        return in_array($partner->getId(), array_map(function($p) {return $p->getId();},$this->partners));
+        return in_array($partner->getId(), array_map(fn($p):int => $p->getId(),$this->partners));
     }
 
     public function setEquipments(array $equipments): void
@@ -220,7 +220,7 @@ class Workout
 
     public function asEquipment(Equipment $equipment): bool
     {
-        return in_array($equipment->getId(), array_map(function($e) {return $e->getId();},$this->equipments));
+        return in_array($equipment->getId(), array_map(fn($e):int => $e->getId(),$this->equipments));
     }
 
     public function setWorkoutsRoads(array $workoutsRoads): void

@@ -72,29 +72,21 @@ class Country
 
     public function getNumberRoads(): int
     {
-        return array_reduce($this->mounts, function($carry, $item) {
-            return $carry+count($item->getRoads());
-        }, 0);
+        return array_reduce($this->mounts, fn($c, $i) => $c+count($i->getRoads()), 0);
     }
 
     public function getNumberPools(): int
     {
-        return array_reduce($this->cities, function($carry, $item) {
-            return $carry+count($item->getPools());
-        }, 0);
+        return array_reduce($this->cities, fn($c, $i) => $c+count($i->getPools()), 0);
     }
 
     public function getMountsRoadsWorkoutsSumNumber(): int
     {
-        return array_reduce(array_map(function($m) {return $m->getRoadsWorkoutsSumNumber();}, $this->mounts), function($carry, $item) {
-            return $carry+$item;
-        }, 0);
+        return array_reduce(array_map(fn($m):int => $m->getRoadsWorkoutsSumNumber(), $this->mounts), fn($c, $i):int => $c+$i, 0);
     }
 
     public function getCitiesPoolsWorkoutsSumNumber(): int
     {
-        return array_reduce(array_map(function($m) {return $m->getPoolsWorkoutsSumNumber();}, $this->cities), function($carry, $item) {
-            return $carry+$item;
-        }, 0);
+        return array_reduce(array_map(fn($m):int => $m->getPoolsWorkoutsSumNumber(), $this->cities), fn($c, $i):int => $c+$i, 0);
     }
 }

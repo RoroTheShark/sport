@@ -134,7 +134,7 @@ class Equipment
 
     public function asSport(Sport $sport): bool
     {
-        return in_array($sport->getId(), array_map(function($s) {return $s->getId();},$this->sports));
+        return in_array($sport->getId(), array_map(fn($s): int => $s->getId(),$this->sports));
     }
 
     /**
@@ -142,7 +142,7 @@ class Equipment
      */
     public function getSportsIdString(): string
     {
-        return implode(",", array_map(function($s) {return $s->getId();},$this->sports));
+        return implode(",", array_map(fn($s): int => $s->getId(),$this->sports));
     }
 
     public function setWorkouts(array $workouts): void

@@ -54,8 +54,6 @@ class Mount
 
     public function getRoadsWorkoutsSumNumber(): int
     {
-        return array_reduce(array_map(function($r) {return $r->getWorkoutsSumNumber();}, $this->roads), function($carry, $item) {
-            return $carry+$item;
-        }, 0);
+        return array_reduce(array_map(fn($r): int => $r->getWorkoutsSumNumber(), $this->roads), fn($c, $i): int =>$c+$i, 0);
     }
 }

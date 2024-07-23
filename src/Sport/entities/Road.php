@@ -52,8 +52,6 @@ class Road
 
     public function getWorkoutsSumNumber(): int
     {
-        return array_reduce($this->workoutsRoads, function($carry, $item) {
-            return $carry+$item->getNumber();
-        }, 0);
+        return array_reduce($this->workoutsRoads, fn($c, $i): int => $c+$i->getNumber(), 0);
     }
 }
