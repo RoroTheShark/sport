@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 22 juil. 2024 à 14:16
+-- Généré le : mar. 23 juil. 2024 à 07:51
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.2.0
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `romain-dvlp.fr_svg`
+-- Base de données : `romain-dvlp.fr`
 --
 
 -- --------------------------------------------------------
@@ -31,7 +31,8 @@ DROP TABLE IF EXISTS `s_ce`;
 CREATE TABLE IF NOT EXISTS `s_ce` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE_NOM` (`nom`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='Compétition / entrainement';
 
 --
@@ -39,9 +40,9 @@ CREATE TABLE IF NOT EXISTS `s_ce` (
 --
 
 INSERT INTO `s_ce` (`id`, `nom`) VALUES
-(1, 'Entraînement'),
 (2, 'Compétition'),
-(3, 'Échauffement/récup compétition');
+(3, 'Échauffement/récup compétition'),
+(1, 'Entraînement');
 
 -- --------------------------------------------------------
 
@@ -115,8 +116,7 @@ CREATE TABLE IF NOT EXISTS `s_evenements` (
   `date_debut` date NOT NULL,
   `date_fin` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -128,7 +128,8 @@ DROP TABLE IF EXISTS `s_intensites`;
 CREATE TABLE IF NOT EXISTS `s_intensites` (
   `id` int NOT NULL AUTO_INCREMENT,
   `valeur` int NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE_VALEUR` (`valeur`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
@@ -182,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `s_marques` (
   `nom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_NOM` (`nom`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -205,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `s_materiels` (
   PRIMARY KEY (`id`),
   KEY `id_sous_type` (`id_sous_type`),
   KEY `FK_MATERIEL_MARQUE` (`id_marque`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -252,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `s_materiels_sports` (
   PRIMARY KEY (`id`),
   KEY `FK_MATERIEL_SPORTS_SPORT` (`id_sport`),
   KEY `FK_MATERIEL_SPORTS_MATERIEL` (`id_materiel`)
-) ENGINE=InnoDB AUTO_INCREMENT=526 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=534 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -345,7 +346,7 @@ CREATE TABLE IF NOT EXISTS `s_monts` (
   `nom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pays` (`id_pays`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -357,8 +358,9 @@ DROP TABLE IF EXISTS `s_partenaires`;
 CREATE TABLE IF NOT EXISTS `s_partenaires` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE_NOM` (`nom`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -370,8 +372,9 @@ DROP TABLE IF EXISTS `s_pays`;
 CREATE TABLE IF NOT EXISTS `s_pays` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE_NOM` (`nom`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -385,8 +388,9 @@ CREATE TABLE IF NOT EXISTS `s_piscines` (
   `id_ville` int NOT NULL,
   `nom` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE_PISCINE` (`id_ville`,`nom`),
   KEY `FK_PISCINES_VILLES` (`id_ville`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -401,7 +405,7 @@ CREATE TABLE IF NOT EXISTS `s_routes` (
   `nom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_mont` (`id_mont`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -471,7 +475,7 @@ CREATE TABLE IF NOT EXISTS `s_seances` (
   KEY `FK_SEANCES_SAISON` (`id_saison`),
   KEY `FK_SEANCES_MOMENT` (`id_moment`),
   KEY `FK_SEANCES_MOIS` (`id_mois`)
-) ENGINE=InnoDB AUTO_INCREMENT=3195 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3308 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -484,8 +488,10 @@ CREATE TABLE IF NOT EXISTS `s_seances_materiels` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_seance` int NOT NULL,
   `id_materiel` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4402 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`id`),
+  KEY `FK_SEANCESMATERIELS_MATERIEL` (`id_materiel`),
+  KEY `FK_SEANCESMATERIELS_SEANCE` (`id_seance`)
+) ENGINE=InnoDB AUTO_INCREMENT=4787 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -499,8 +505,9 @@ CREATE TABLE IF NOT EXISTS `s_seances_partenaires` (
   `id_seance` int NOT NULL,
   `id_partenaire` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_SEANCESPARTENAIRES_PARTENAIRE` (`id_partenaire`)
-) ENGINE=InnoDB AUTO_INCREMENT=1008 DEFAULT CHARSET=latin1;
+  KEY `FK_SEANCESPARTENAIRES_PARTENAIRE` (`id_partenaire`),
+  KEY `FK_SEANCESPARTENAIRES_SEANCE` (`id_seance`)
+) ENGINE=InnoDB AUTO_INCREMENT=1110 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -517,7 +524,7 @@ CREATE TABLE IF NOT EXISTS `s_seances_routes` (
   PRIMARY KEY (`id`),
   KEY `id_seance` (`id_seance`),
   KEY `id_mont_route` (`id_route`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -562,10 +569,9 @@ CREATE TABLE IF NOT EXISTS `s_villes` (
   `id_pays` int NOT NULL,
   `nom` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE_VILLE` (`id_pays`,`nom`),
   KEY `FK_VILLES_PAYS` (`id_pays`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Contraintes pour les tables déchargées
@@ -623,16 +629,24 @@ ALTER TABLE `s_seances`
   ADD CONSTRAINT `FK_SEANCES_ENVIRONNEMENT` FOREIGN KEY (`id_environnement`) REFERENCES `s_environnements` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `FK_SEANCES_INTENSITE` FOREIGN KEY (`id_intensite`) REFERENCES `s_intensites` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `FK_SEANCES_JOUR` FOREIGN KEY (`id_jour`) REFERENCES `s_jours` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `FK_SEANCES_MOIS` FOREIGN KEY (`id_mois`) REFERENCES `s_mois` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `FK_SEANCES_MOMENT` FOREIGN KEY (`id_moment`) REFERENCES `s_moments` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `FK_SEANCES_PISCINE` FOREIGN KEY (`id_piscine`) REFERENCES `s_piscines` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `FK_SEANCES_SAISON` FOREIGN KEY (`id_saison`) REFERENCES `s_saisons` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `FK_SEANCES_MOIS` FOREIGN KEY (`id_mois`) REFERENCES `s_mois` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `FK_SEANCES_SAISON` FOREIGN KEY (`id_saison`) REFERENCES `s_saisons` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Contraintes pour la table `s_seances_materiels`
+--
+ALTER TABLE `s_seances_materiels`
+  ADD CONSTRAINT `FK_SEANCESMATERIELS_MATERIEL` FOREIGN KEY (`id_materiel`) REFERENCES `s_materiels` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `FK_SEANCESMATERIELS_SEANCE` FOREIGN KEY (`id_seance`) REFERENCES `s_seances` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Contraintes pour la table `s_seances_partenaires`
 --
 ALTER TABLE `s_seances_partenaires`
-  ADD CONSTRAINT `FK_SEANCESPARTENAIRES_PARTENAIRE` FOREIGN KEY (`id_partenaire`) REFERENCES `s_partenaires` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `FK_SEANCESPARTENAIRES_PARTENAIRE` FOREIGN KEY (`id_partenaire`) REFERENCES `s_partenaires` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `FK_SEANCESPARTENAIRES_SEANCE` FOREIGN KEY (`id_seance`) REFERENCES `s_seances` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Contraintes pour la table `s_seances_routes`
