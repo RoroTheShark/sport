@@ -162,16 +162,12 @@ class Equipment
 
     public function getWorkoutsSumDistance(): string
     {
-        return $this->formateDistanceKM(array_reduce(array_map(function($w) {return method_exists($w, "getDistance") ? $w->getDistance() : 0;}, $this->workouts), function($carry, $item) {
-            return $carry+$item;
-        }, 0)/1000, "texte");
+        return $this->formateDistanceKM(array_reduce(array_map(fn($w):string => $w->getDistance(), $this->workouts), fn($c, $i):int => $c+$i, 0)/1000, "texte");
     }
 
     public function getWorkoutsSumTime(): string
     {
-        return $this->formateTime(array_reduce(array_map(function($w) {return $w->getTime();}, $this->workouts), function($carry, $item) {
-            return $carry+$item;
-        }, 0), "texte");
+        return $this->formateTime(array_reduce(array_map(fn($w):string => $w->getTime(), $this->workouts), fn($c, $i):int => $c+$i, 0), "texte");
     }
 
 }

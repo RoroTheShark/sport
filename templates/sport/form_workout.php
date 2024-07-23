@@ -33,7 +33,7 @@
 				<span>
 <?php
 	foreach($countries as $country) {
-		$checked = (method_exists($workout, "getPool") && $workout->getPool() && $workout->getPool()->getCity()->getCountry()->getId() == $country->getId()) ? " checked" : "";
+		$checked = ($workout->getPool() && $workout->getPool()->getCity()->getCountry()->getId() == $country->getId()) ? " checked" : "";
 ?>
 				<input type="radio" name="country" id="country-<?= $country->getId() ?>" value="<?= $country->getId() ?>" onclick="changePays();"<?= $checked ?> /><label for="country-<?= $country->getId() ?>"><?= $country->getName() ?></label>
 <?php } ?>
@@ -44,7 +44,7 @@
 				<span>
 <?php
 	foreach($cities as $city) {
-		$checked = (get_class($workout) == "Sport\Entity\WorkoutSwimming" && $workout->getPool() && $workout->getPool()->getCity()->getId() == $city->getId()) ? " checked" : "";
+		$checked = ($workout->getPool() && $workout->getPool()->getCity()->getId() == $city->getId()) ? " checked" : "";
 ?>
 					<input type="radio" name="city" id="city-<?= $city->getId() ?>" value="<?= $city->getId() ?>" data-pays="<?= $city->getCountry()->getId() ?>" onclick="changeVille();"<?= $checked ?> /><label for="city-<?= $city->getId() ?>" ><?= $city->getName() ?></label>
 <?php } ?>
@@ -55,7 +55,7 @@
 				<span>
 <?php
 	foreach($pools as $pool) {
-		$checked = (get_class($workout) == "Sport\Entity\WorkoutSwimming" && $workout->getPool() && $workout->getPool()->getId() == $pool->getId()) ? " checked" : "";
+		$checked = ($workout->getPool() && $workout->getPool()->getId() == $pool->getId()) ? " checked" : "";
 ?>
 					<input type="radio" name="idPool" id="idPool-<?= $pool->getId() ?>" value="<?= $pool->getId() ?>" data-ville="<?= $pool->getCity()->getId() ?>"<?= $checked ?> /><label for="idPool-<?= $pool->getId() ?>" ><?= $pool->getName() ?></label>
 <?php } ?>
@@ -76,11 +76,11 @@
 			</div>
 			<div id="divDistance">
 				<span>Distance : </span>
-				<span><input type="text" name="distance" id="distance" value="<?= method_exists($workout, "getDistance") ? $workout->getDistance() : "" ?>" /> m</span>
+				<span><input type="text" name="distance" id="distance" value="<?= $workout->getDistance() ?>" /> m</span>
 			</div>
 			<div id="divDenivele">
 				<span>Dénivelé : </span>
-				<span><input type="text" name="elevation" id="elevation" value="<?= method_exists($workout, "getElevation") ? $workout->getElevation() : "" ?>" /> m</span>
+				<span><input type="text" name="elevation" id="elevation" value="<?= $workout->getElevation() ?>" /> m</span>
 			</div>
 			<div>
 				<span>Temps : </span>
@@ -239,8 +239,6 @@
 					cptErr++;
 					tabErr.push("distance");
 				}
-			}
-			if(sport == "1") {
 				var inputsCountry = document.getElementById("divPays").getElementsByTagName("input");
 				var cptCountries = 0;
 				for(var i = 0; i < inputsCountry.length; i++) {

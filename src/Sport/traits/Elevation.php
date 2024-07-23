@@ -39,4 +39,12 @@ trait Elevation
         }
         return $toReturn;
     }
+    
+    /**
+     * @return string Retourne une vitesse de style "28.28 km/h" tenant compte du dénivelé
+     */
+    public function getSpeedDistanceAndElevationFormated(): string
+    {
+        return $this->distance > 0 && $this->time > 0 ? $this->formateSpeed(($this->distance+($this->elevation*10))/($this->time/(60*60))) : "";
+    }
 }

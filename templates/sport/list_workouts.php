@@ -89,11 +89,11 @@
                 <td><?= $workout->getEnvironment()->getSport()->getName() ?> / <?= $workout->getEnvironment()->getName() ?></td>
                 <td><?= $workout->getCompetTrain()->getName() ?></td>
                 <td><?= $workout->getTimeFormated() ?></td>
-                <td><?= method_exists($workout, "getDistance") ? $workout->getDistanceFormated() : "" ?></td>
-                <td><?= method_exists($workout, "getElevation") ? $workout->getElevationFormated() : "" ?></td>
-                <td><?= method_exists($workout, "getDistance") ? $workout->getSpeedFormated() : "" ?></td>
-                <td><?= method_exists($workout, "getElevation") ? $workout->getDistanceAndElevationFormated() : "" ?></td>
-                <td><?= method_exists($workout, "getElevation") ? $workout->getSpeedDistanceAndElevationFormated() : "" ?></td>
+                <td><?= $workout->getDistanceFormated() ?></td>
+                <td><?= $workout->getElevationFormated() ?></td>
+                <td><?= $workout->getSpeedFormated() ?></td>
+                <td><?= $workout->getDistanceAndElevationFormated() ?></td>
+                <td><?= $workout->getSpeedDistanceAndElevationFormated() ?></td>
                 <td><?= $workout->getIntensity()->getValue() ?>/6</td>
                 <td><?= implode(", ",array_map(function($p) {return $p->getName();},$workout->getPartners())) ?></td>
                 <td>

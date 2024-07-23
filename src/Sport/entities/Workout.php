@@ -9,9 +9,13 @@ require_once('src/Sport/entities/Equipment.php');
 require_once('src/Sport/entities/Intensity.php');
 require_once('src/Sport/entities/Moment.php');
 require_once('src/Sport/entities/Partner.php');
+require_once('src/Sport/entities/Pool.php');
 require_once('src/Sport/entities/Season.php');
 require_once('src/Sport/entities/Month.php');
 require_once('src/Sport/entities/WorkoutRoad.php');
+
+require_once('src/Sport/traits/Distance.php');
+require_once('src/Sport/traits/Elevation.php');
 require_once('src/Sport/traits/Time.php');
 
 use Sport\Entity\CompetTrain;
@@ -21,14 +25,18 @@ use Sport\Entity\Equipment;
 use Sport\Entity\Intensity;
 use Sport\Entity\Moment;
 use Sport\Entity\Partner;
+use Sport\Entity\Pool;
 use Sport\Entity\Season;
 use Sport\Entity\Month;
 use Sport\Entity\WorkoutRoad;
+
+use Sport\Trait\Distance;
+use Sport\Trait\Elevation;
 use Sport\Trait\Time;
 
 class Workout
 {
-    use Time;
+    use Distance, Elevation, Time;
 
     protected int $id = 0;
     protected ?Environment $environment = null;
@@ -239,5 +247,10 @@ class Workout
     public function getListEquipments(int $idType): string
     {
         return implode(", ",array_map(function($e) use ($idType) {return $e->getName();},array_filter($this->equipments, function($e) use ($idType) {return $e->getEquipmentSubType()->getEquipmentType()->getId() == $idType;})));
+    }
+
+    public function getPool(): ?Pool
+    {
+        return null;
     }
 }
