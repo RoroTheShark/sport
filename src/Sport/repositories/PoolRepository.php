@@ -88,7 +88,6 @@ class PoolRepository
         $requeteStatsPools .= "     LEFT JOIN (SELECT id_piscine, COUNT(*) AS nombre FROM s_seances WHERE date_seance BETWEEN :dateStart AND :dateEnd AND id_ce = 1 AND id_piscine IS NOT NULL GROUP BY id_piscine) se1 ON (se1.id_piscine = pi.id)";
         $requeteStatsPools .= "     LEFT JOIN (SELECT id_piscine, COUNT(*) AS nombre FROM s_seances WHERE date_seance BETWEEN :dateStart AND :dateEnd AND id_ce = 2 AND id_piscine IS NOT NULL GROUP BY id_piscine) se2 ON (se2.id_piscine = pi.id)";
         $requeteStatsPools .= "     LEFT JOIN (SELECT id_piscine, COUNT(*) AS nombre FROM s_seances WHERE date_seance BETWEEN :dateStart AND :dateEnd AND id_ce = 3 AND id_piscine IS NOT NULL GROUP BY id_piscine) se3 ON (se3.id_piscine = pi.id)";
-        $requeteStatsPools .= " GROUP BY pi.id";
         $requeteStatsPools .= " ORDER BY pi.id;";
         $resultsStatsPools = $this->dbMysql->select($requeteStatsPools, ['dateStart' => $dateStart, 'dateEnd' => $dateEnd]);
 
