@@ -246,6 +246,7 @@
 						cptCountries++;
 					}
 				}
+			}
 			if(sport == "1") {
 				if(cptCountries == 0) {
 					cptErr++;
